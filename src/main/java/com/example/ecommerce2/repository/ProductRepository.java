@@ -1,0 +1,11 @@
+package com.example.ecommerce2.repository;
+
+import com.example.ecommerce2.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product,Integer> {
+
+    public Product findProductById(Integer idProduct);
+}
