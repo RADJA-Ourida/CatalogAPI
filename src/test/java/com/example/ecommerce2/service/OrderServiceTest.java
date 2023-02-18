@@ -74,7 +74,6 @@ class OrderServiceTest {
 
 
     @Test
-    @Disabled
     void addItemCartCalculateTotalCart() {
         //Given
         Product product1 = new Product(10.0, "prod1");

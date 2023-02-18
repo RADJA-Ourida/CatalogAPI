@@ -6,30 +6,40 @@ import com.example.ecommerce2.model.ProductBought;
 import com.example.ecommerce2.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class OrderService {
+
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final CartRepository cartRepository;
     private final CatalogRepository catalogRepository;
+
     private final StockRepository stockRepository;
+
     private final OrderRepository orderRepository;
+
     private final ProductBoughtRepository productBoughtRepository;
 
     public Cart addItemToCart(Integer idCart, Integer idProduct) {
-        Cart cartToSave = new Cart();
-        Cart cartRequest = cartRepository.findCartById(idCart);
+
+
         Product productRequest = productRepository.findProductById(idProduct);
         if (productRequest != null) {// check if this item exists
-            if (cartRequest != null) {
+            Cart cartRequest = cartRepository.findCartById(idCart);
+
+            if (cartRequest != null) {// check if this cart exists
                 cartRequest.getProductList().add(productRequest);
                 return cartRepository.save(cartRequest);
             } //else : create a new cart
+            Cart cartToSave = new Cart();
+            cartToSave.setProductList(new ArrayList<>());
             cartToSave.getProductList().add(productRequest);
             return cartRepository.save(cartToSave);
         }
@@ -89,26 +99,24 @@ public class OrderService {
                 //5- vider le panier
                 cart.getProductList().clear();
                 cartRepository.save(cart);
-            }// else if the cart is empty
-        } // Else if the cart doesn't exist
 
-        return totalCart;//"Payment Done. You'll receive your order. ";
+                return totalCart;//"Payment Done. You'll receive your order. ";
+
+            }// else if the cart is empty
+            return totalCart; //totalCart === 0.0
+
+        } // Else if the cart doesn't exist
+        return -1.0;
     }
 
     //---------------------------------------------------------------------------------------------
-    public Map<Integer,Integer> convertListProductToMap(List<Product> productList){//Map<IdProduit,Qantity>
-        Map<Integer, Integer> productMapVar = new HashMap<>();//HashMap <IdProduit,Quantity>
 
-        for (int i = 0; i < productList.size(); i++) {
-            Integer idVar = productList.get(i).getId();
-            if (productMapVar.containsKey(idVar)) { // if the product appears more than one time in the list
-                productMapVar.replace(idVar, productMapVar.get(idVar).intValue(),
-                        productMapVar.get(idVar).intValue() + 1);
-            }
-            else productMapVar.put(idVar, 1); // if the product appears for the first time in the list
-        }
+    public Map<Integer,Integer> convertListProductToMap(List<Product> productList){
+        Map<Integer, Integer> productMapVar = productList.stream()
+                .collect(Collectors.toMap(Product::getId, i->1, Integer::sum));
         return productMapVar;
     }
+
 
     public Map<Integer,Integer> updateMapProduct(Map<Integer,Integer> productMapVar){ //Map<ProductId, Quantity>
 
@@ -153,6 +161,20 @@ public class OrderService {
 
     }
 
+
+    public Map<Integer,Integer> convertListProductToMap2(List<Product> productList){//Map<IdProduit,Qantity>
+        Map<Integer, Integer> productMapVar = new HashMap<>();//HashMap <IdProduit,Quantity>
+
+        for (int i = 0; i < productList.size(); i++) {
+            Integer idVar = productList.get(i).getId();
+            if (productMapVar.containsKey(idVar)) { // if the product appears more than one time in the list
+                productMapVar.replace(idVar, productMapVar.get(idVar).intValue(),
+                        productMapVar.get(idVar).intValue() + 1);
+            }
+            else productMapVar.put(idVar, 1); // if the product appears for the first time in the list
+        }
+        return productMapVar;
+    }
 
 
 

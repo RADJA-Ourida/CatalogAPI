@@ -6,6 +6,7 @@ import com.example.ecommerce2.model.*;
 import com.example.ecommerce2.modelAPI.*;
 import com.example.ecommerce2.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,11 +16,19 @@ import java.util.List;
 @Service
 public class CatalogService {
 
+
+
     private final ProductRepository productRepository;
+
     private final CategoryRepository categoryRepository;
+
     private final CartRepository cartRepository;
+
     private final CatalogRepository catalogRepository;
+
     private final StockRepository stockRepository;
+
+
 
     public Product createProduct(ProductAPI productAPI){
         Product productToSave = new Product(productAPI.getPrice(),productAPI.getName());
