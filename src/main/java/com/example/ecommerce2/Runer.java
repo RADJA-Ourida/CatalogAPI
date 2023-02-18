@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @AllArgsConstructor
-@Component
 public class Runer implements CommandLineRunner {
     private final CatalogService catalogService;
     private final OrderService orderService;
