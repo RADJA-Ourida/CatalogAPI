@@ -50,10 +50,7 @@ class OrderServiceTest {
 
         // Products
         Product product1 = new Product(10.0, "prod1");
-       // ProductAPI productAPI = new ProductAPI(10.0, "prod1");
 
-
-        // when(productRepository.save(product1)).thenReturn(product1);
         when(productRepository.findProductById(1)).thenReturn(product1);
 
         //Cart
@@ -77,20 +74,6 @@ class OrderServiceTest {
     void addItemCartCalculateTotalCart() {
         //Given
         Product product1 = new Product(10.0, "prod1");
-
-         /*
-        ProductAPI productAPI = new ProductAPI(10.0, "prod1");
-
-
-        //when
-        Product p = catalogService.createProduct(productAPI);
-        //then
-        ArgumentCaptor<Product> productArgumentCaptor = ArgumentCaptor.forClass(Product.class);
-        verify(productRepository).save(productArgumentCaptor.capture());//Make sure that we invoke the function save()
-        Product capturedProduct = productArgumentCaptor.getValue();
-        assertEquals(capturedProduct.getPrice(), 10.0);
-
-       */
 
         //when
         orderService.addItemToCart(1, 1);
