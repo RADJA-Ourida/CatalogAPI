@@ -10,29 +10,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @AllArgsConstructor
 @SpringBootApplication
 @RequestMapping("/")
 public class Ecommerce2Application {
 	//private ClassCmdLineRunner classCmdLineRunner;
 	private final CatalogService catalogService;
-	private OrderService orderService;
+	private final OrderService orderService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Ecommerce2Application.class, args);
-
 		System.out.println("Hello World");
-
-
-
-
-
 	}
 	@Bean
 	public Runer getRuner( ){
