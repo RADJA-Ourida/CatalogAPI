@@ -1,15 +1,18 @@
-version: '3'
+version: '3.1'
 services:
   app:
-    build: .
+    container_name: appdockercont
+    image: appdockerimag
+    build: ./
     ports:
       - "3000:3000"
     depends_on:
-      - h2db
+      - postgresql
+  postgresql:
+    image: postgres:latest
     environment:
-      SPRING_DATASOURCE_URL: jdbc:h2:mem:dbAPI
-  h2db:
-    image: oscarfonts/h2
+      - POSTGRES_PASSWORD=123456789Oury
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=demotodock
     ports:
-      - "1521:1521"
-
+      - "5432:5432"
