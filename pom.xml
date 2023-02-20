@@ -75,7 +75,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>ecommerce</finalName>
+		<finalName>catalogApi</finalName>
 	</build>
 
 </project>
