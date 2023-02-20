@@ -1,0 +1,15 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - h2db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:dbAPI
+  h2db:
+    image: oscarfonts/h2
+    ports:
+      - "1521:1521"
+
