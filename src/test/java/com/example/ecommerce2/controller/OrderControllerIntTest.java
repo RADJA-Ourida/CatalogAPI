@@ -68,8 +68,6 @@ class OrderControllerIntTest {
         jdbcTemplate.execute("DELETE FROM cart");
 
 
-
-
         // 1. Insert 4 Products
         ProductAPI productAPI1 = new ProductAPI(10.0,"Prod1");
         ProductAPI productAPI2 = new ProductAPI(20.0,"Prod2");
