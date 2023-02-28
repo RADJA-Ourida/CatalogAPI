@@ -51,54 +51,50 @@ jobs:
       run:  mvn verify -P integration-test -Dtest=*IntTest  #specify the files wich end with'IntTest' to be run otherwise it runs even the unit test
 ###
 
-  build-DockerImg-push-to-GCR:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  #build-DockerImg-push-to-GCR:
+  #  needs: build
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - uses: actions/checkout@v3
 
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: google-github-actions/auth@v1
-        with:
+   #   - id: 'auth'
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
           credentials_json: ${{ env.GCP_SA_KEY }}
           export_default_credentials: true
 
-
-      - name: Setup gcloud CLI
-        uses: google-github-actions/setup-gcloud@v0.3.0
-        with:
+    - name: Setup gcloud CLI
+      uses: google-github-actions/setup-gcloud@v0.3.0
+      with:
           project_id: ${{ env.PROJECT_ID }}
 
       #Set up the Docker credential helper to use gcloud as the authentication method.
-      - name: Configure Docker to authenticate with the GCR
-        run: |-
-          gcloud --quiet auth configure-docker
+    - name: Configure Docker to authenticate with the GCR
+      run: gcloud --quiet auth configure-docker
 
-      - name: Build and push Docker image
-        run: |
-          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
-          docker push gcr.io/${{  env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+    - name: Build and push Docker image
+      run: |-
+        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
+        docker push gcr.io/${{  env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
-      - name: install cloud auth plugin
-        run: |
-          gcloud components install gke-gcloud-auth-plugin
-          gcloud components update 
+    - name: install cloud auth plugin
+      run: |
+        gcloud components install gke-gcloud-auth-plugin
+        gcloud components update 
 
 
-      - name: connect to GKE Cluster
-        run: |
-          #gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --region ${{ env.GKE_ZONe }}
-          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }}  --region ${{ env.GKE_ZONe }} --project ${{  env.PROJECT_ID }}
+    - name: connect to GKE Cluster
+      run: |
+        #gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --region ${{ env.GKE_ZONe }}
+        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }}  --region ${{ env.GKE_ZONe }} --project ${{  env.PROJECT_ID }}
 
-      - name: create deployment
-        run: |
-          kubectl create deployment ${{ env.Name_APP_ON_SERVER }} --image=gcr.io/${{  env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+    - name: create deployment
+      run: |
+        kubectl create deployment ${{ env.Name_APP_ON_SERVER }} --image=gcr.io/${{  env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
-      - name: expose to the internet
-        run: |
-          kubectl expose deployment ${{ env.Name_APP_ON_SERVER }}  --type LoadBalancer --port 80 --target-port 3000  ## The option --type LoadBalancerallows you to create a Compute Engine load balancer for your container. The option --portinitializes public port 80 on the Internet and the option --target-portroutes traffic to port 8080 of the application.
+    - name: expose to the internet
+      run: kubectl expose deployment ${{ env.Name_APP_ON_SERVER }}  --type LoadBalancer --port 80 --target-port 3000  ## The option --type LoadBalancerallows you to create a Compute Engine load balancer for your container. The option --portinitializes public port 80 on the Internet and the option --target-portroutes traffic to port 8080 of the application.
 
-      - name: inspect the service Name_APP_ON_SERVER
-        run: |
-          kubectl get service ${{ env.Name_APP_ON_SERVER }}
+    - name: inspect the service Name_APP_ON_SERVER
+      run: kubectl get service ${{ env.Name_APP_ON_SERVER }}
