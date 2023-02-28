@@ -20,7 +20,7 @@ on:
 env:
   PROJECT_ID: productdatapipeline
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-  IMAGE_NAME: catalogApp
+  IMAGE_NAME: catalogapp
   TAG: ${{ github.sha }}
   GKE_CLUSTER: autopilot-cluster-3
   GKE_ZONE: europe-central2
@@ -89,7 +89,7 @@ jobs:
       - name: connect to GKE Cluster
         run: |
           #gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --region ${{ env.GKE_ZONe }}
-          gcloud container clusters get-credentials autopilot-cluster-2 --region europe-central2 --project productdatapipeline
+          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }}  --region ${{ env.GKE_ZONe }} --project ${{  env.PROJECT_ID }}
 
       - name: create deployment
         run: |
