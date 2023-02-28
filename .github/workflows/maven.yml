@@ -49,7 +49,7 @@ jobs:
       
     - name: Run integration tests
       run:  mvn verify -P integration-test -Dtest=*IntTest  #specify the files wich end with'IntTest' to be run otherwise it runs even the unit test
-
+###
 
   build-DockerImg-push-to-GCR:
     needs: build
