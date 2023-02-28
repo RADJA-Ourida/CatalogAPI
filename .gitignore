@@ -30,3 +30,8 @@ build/
 
 ### VS Code ###
 .vscode/
+/target
+!/target/*.jar
+!/target/*.jar.original
+
+
