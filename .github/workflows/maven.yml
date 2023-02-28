@@ -13,6 +13,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  commit:
+    branches: ["main"]
 
 
 
@@ -100,4 +102,4 @@ jobs:
 
       - name: inspect the service Name_APP_ON_SERVER
         run: |
-          kubectl get service ${{ env.Name_APP_ON_SERVER }} 
+          kubectl get service ${{ env.Name_APP_ON_SERVER }}
