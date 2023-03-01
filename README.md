@@ -30,7 +30,7 @@ Two ways to do this :
       
       docker compose up 
 
-- with Dockerfile only :
+- with Dockerfile only: 
 
       ./mvnw clean package -Dskiptest 
    
