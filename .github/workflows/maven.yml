@@ -86,7 +86,7 @@ jobs:
 
     - name: connect to GKE Cluster
       run: |
-        #gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --region ${{ env.GKE_ZONe }}
+       
         #gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }}  --region ${{ env.GKE_ZONe }} #--project ${{  env.PROJECT_ID }}
         gcloud container clusters get-credentials autopilot-cluster-3 --region europe-central2 --project productdatapipeline
     - name: create deployment
